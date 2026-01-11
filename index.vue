@@ -15,6 +15,8 @@
       <ad-heading v-else :tag="2" :text="props.title" />
     </template>
 
+    <slot name="content" />
+    
     <form
       v-if="props.fields && props.action !== 'show'"
       class="form-container"
@@ -27,7 +29,7 @@
           v-bind="field.props"
           :id="field.name"
           v-model="formData[field.name]"
-          :ad-type="props.entity"
+          :ad-type="props.entity as string"
           :panel-class="isSelectOrDatePicker(field.type) ? props.entity : null"
           :date-format="field.type === 'date-picker' ? 'yy-mm-dd' : null"
           :toggle-mask="field.type === 'password' ? true : null"
@@ -72,17 +74,14 @@
           :label="props.cancelButtonLabel"
           icon="prime:times"
           severity="secondary"
-          rounded
-          text
           @click="close!(props.action!)"
         />
         <ad-button
-          v-if="props.fields && props.confirm"
+          v-if="props.action !== 'delete' && props.confirm"
           :ad-type="props.entity"
           :label="props.confirmButtonLabel"
+          :disabled="props.confirmButtonDisabled"
           icon="prime:check"
-          rounded
-          text
           @click="props.confirm(formData, props.getData)"
         />
         <ad-button
@@ -92,8 +91,6 @@
           :ad-type="props.entity"
           :label="props.confirmButtonLabel"
           icon="prime:check"
-          rounded
-          text
           @click="props.confirm(props.selectedObject.id, props.getData)"
         />
       </div>
@@ -128,6 +125,7 @@ const excludedProps = [
   'data',
   'getData',
   'confirmButtonLabel',
+  'confirmButtonDisabled',
   'confirm',
   'cancelButtonLabel',
   'close',

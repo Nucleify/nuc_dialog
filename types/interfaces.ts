@@ -22,6 +22,7 @@ export interface NucDialogInterface extends DialogInterface {
   data?: ObjectType[]
   getData?: () => void
   confirmButtonLabel?: string
+  confirmButtonDisabled?: boolean
   confirm?: ConfirmDialogFunctionType
   cancelButtonLabel?: string
   close?: CloseDialogType
